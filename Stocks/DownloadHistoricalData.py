@@ -9,6 +9,8 @@ Objectives:
     Download and create a csv file with historical data 
     from all components (stocks) from bovespa.
     Required Libraries:
+        requests
+        lxlm
         Pandas
         yfinance 
         yahoofinancials
@@ -23,7 +25,8 @@ from lxml import html
 # We will need this list to download the data with yfinance
 
 # Get page content from specific url
-url = 'https://topforeignstocks.com/indices/components-of-the-bovespa-index/';
+url = 'https://topforeignstocks.com'
+url = url+'/indices/components-of-the-bovespa-index/';
 pageContent = requests.get(url);
 
 # Store the contents under tree
