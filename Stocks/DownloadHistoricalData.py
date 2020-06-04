@@ -2,7 +2,7 @@
 """
 Created on Thu Jun  4 11:24:20 2020
 
-Status: NOTHING IS WORKING
+Status: Able to get Bovespa Components
 
 Objectives:
     
@@ -15,20 +15,31 @@ Objectives:
         
 @author: Sergio Novi, sergiolnovi@gmail.com
 """
-# Basic Libraries to download and read the data
 import requests
 from lxml import html
 
-pageContent = requests.get('https://topforeignstocks.com/indices/components-of-the-bovespa-index/')
-#Store the contents of the website under doc
+
+# Step 1: Web-Scrap the list of all Bovespa components.
+# We will need this list to download the data with yfinance
+
+# Get page content from specific url
+url = 'https://topforeignstocks.com/indices/components-of-the-bovespa-index/';
+pageContent = requests.get(url);
+
+# Store the contents under tree
 tree = html.fromstring(pageContent.content)
-#Parse data that are stored between <tr>..</tr> of HTML
-tr_elements = tree.xpath('//*[@id="tablepress-2953"]/tbody')
 
+# Take the data from the website table 
+# ATTENTION: (this may not work if the website layout changes) 
+table = tree.xpath('//*[@id="tablepress-2953"]/tbody')
 
-# Website for learning about how to scrab 
-# data from websites
-# https://3583bytesready.net/2016/08/17/scraping-data-python-xpath/
+bovespaComponents=[];
+for i in range(len(table[0])):
+    adress = '//*[@id="tablepress-2953"]/tbody/tr['
+    adress = adress + str(i+1) + ']/td[3]/text()';
+    
+    bovespaComponents.append(tree.xpath(adress)[0]);
 
+print(bovespaComponents)    
 
 
